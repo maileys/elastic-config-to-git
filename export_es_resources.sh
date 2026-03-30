@@ -90,7 +90,7 @@ PATTERNS=("${PATTERNS[@]// /}")
 TYPES=("${TYPES[@]// /}")
 
 # --- Helpers -----------------------------------------------------------------
-CURL_OPTS=(-s -f --max-time 30)
+CURL_OPTS=(-s --max-time 30)
 
 # Build auth header
 AUTH=(-H "Authorization: ApiKey ${ES_API_KEY}")
@@ -101,13 +101,18 @@ if [[ -n "${ES_PROXY:-}" ]]; then
 fi
 
 es_get() {
-    local response
-    if ! response=$(curl "${CURL_OPTS[@]}" "${AUTH[@]}" -H "Content-Type: application/json" "${ES_URL}/$1" 2>&1); then
-        echo "Error fetching ${ES_URL}/$1" >&2
+    local response http_code
+    response=$(curl "${CURL_OPTS[@]}" "${AUTH[@]}" -H "Content-Type: application/json" -w "\n%{http_code}" "${ES_URL}/$1" 2>&1)
+    http_code=$(echo "$response" | tail -1)
+    response=$(echo "$response" | sed '$d')
+
+    if [[ "$http_code" -ge 200 && "$http_code" -lt 300 ]] 2>/dev/null; then
+        echo "$response"
+    else
+        echo "Error fetching ${ES_URL}/$1 (HTTP ${http_code})" >&2
         echo "$response" >&2
         return 1
     fi
-    echo "$response"
 }
 
 matches_pattern() {
@@ -149,7 +154,7 @@ save_resource() {
 
 # --- Connection test ---------------------------------------------------------
 echo "Connecting to ${ES_URL} ..."
-if ! cluster_info=$(es_get "" 2>/dev/null); then
+if ! cluster_info=$(es_get ""); then
     echo "Error: Could not connect to Elasticsearch at ${ES_URL}"
     echo "Check ES_URL and credentials in your config file."
     exit 1
