@@ -1,0 +1,25 @@
+# =============================================================================
+# Elasticsearch Export Configuration
+# =============================================================================
+# Copy this file to config.conf and fill in your values.
+# NEVER commit config.conf to version control.
+# =============================================================================
+
+# Elastic Cloud endpoint (required)
+# e.g. https://my-deployment.es.ap-southeast-2.aws.found.io:9243
+ES_URL=""
+
+# Authentication (required)
+ES_USER="elastic"
+ES_PASS=""
+
+# Patterns to match (case-insensitive, comma-separated)
+# Resources with names containing any of these strings will be exported
+MATCH_PATTERNS="ausiex,custom"
+
+# Resource types to export (comma-separated)
+# Available: pipelines,component_templates,index_templates,lifecycle_policies
+EXPORT_TYPES="pipelines,component_templates,index_templates,lifecycle_policies"
+
+# Output base directory (default: current directory)
+OUTPUT_DIR="."

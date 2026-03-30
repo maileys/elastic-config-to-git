@@ -1,0 +1,8 @@
+# Config with real credentials — never commit
+export_es_resources.conf
+
+# Exported data
+pipelines/
+component_templates/
+index_templates/
+lifecycle_policies/
