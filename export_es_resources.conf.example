@@ -13,6 +13,10 @@ ES_URL=""
 # Create one in Kibana → Stack Management → API Keys
 ES_API_KEY=""
 
+# HTTP(S) proxy (optional)
+# e.g. http://proxy.corp.local:8080
+ES_PROXY=""
+
 # Patterns to match (case-insensitive, comma-separated)
 # Resources with names containing any of these strings will be exported
 MATCH_PATTERNS="ausiex,custom"
