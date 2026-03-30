@@ -60,7 +60,11 @@ source "$CONFIG_FILE"
 # --- Validate config ---------------------------------------------------------
 errors=()
 [[ -z "${ES_URL:-}" ]] && errors+=("ES_URL is not set")
-[[ -z "${ES_PASS:-}" ]] && errors+=("ES_PASS is not set")
+
+# Check that at least one auth method is configured
+if [[ -z "${ES_API_KEY:-}" && -z "${ES_PASS:-}" ]]; then
+    errors+=("No authentication configured — set ES_API_KEY or ES_USER/ES_PASS")
+fi
 
 if [[ ${#errors[@]} -gt 0 ]]; then
     echo "Configuration errors:"
@@ -70,7 +74,6 @@ if [[ ${#errors[@]} -gt 0 ]]; then
     exit 1
 fi
 
-ES_USER="${ES_USER:-elastic}"
 OUTPUT_DIR="${OUTPUT_DIR:-.}"
 MATCH_PATTERNS="${MATCH_PATTERNS:-ausiex,custom}"
 EXPORT_TYPES="${EXPORT_TYPES:-pipelines,component_templates,index_templates,lifecycle_policies}"
@@ -88,7 +91,14 @@ TYPES=("${TYPES[@]// /}")
 
 # --- Helpers -----------------------------------------------------------------
 CURL_OPTS=(-s -f --max-time 30)
-AUTH=(-u "${ES_USER}:${ES_PASS}")
+
+# Build auth header — API key takes precedence
+if [[ -n "${ES_API_KEY:-}" ]]; then
+    AUTH=(-H "Authorization: ApiKey ${ES_API_KEY}")
+else
+    ES_USER="${ES_USER:-elastic}"
+    AUTH=(-u "${ES_USER}:${ES_PASS}")
+fi
 
 es_get() {
     local response
