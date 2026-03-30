@@ -9,8 +9,14 @@
 # e.g. https://my-deployment.es.ap-southeast-2.aws.found.io:9243
 ES_URL=""
 
-# Authentication (required)
-ES_USER="elastic"
+# Authentication — use ONE of the following methods:
+
+# Option 1: API key (recommended)
+# Create one in Kibana → Stack Management → API Keys
+ES_API_KEY=""
+
+# Option 2: Username and password
+ES_USER=""
 ES_PASS=""
 
 # Patterns to match (case-insensitive, comma-separated)
