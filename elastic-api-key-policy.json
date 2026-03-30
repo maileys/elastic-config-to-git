@@ -1,0 +1,16 @@
+{
+  "export-config-role": {
+    "cluster": [
+      "monitor",
+      "read_pipeline",
+      "read_ilm"
+    ],
+    "indices": [],
+    "applications": [],
+    "run_as": [],
+    "metadata": {},
+    "transient_metadata": {
+      "enabled": true
+    }
+  }
+}
