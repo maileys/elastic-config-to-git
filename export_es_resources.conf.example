@@ -9,9 +9,9 @@
 # e.g. https://my-deployment.es.ap-southeast-2.aws.found.io:9243
 ES_URL=""
 
-# Authentication (required)
-ES_USER="elastic"
-ES_PASS=""
+# Authentication — API key (required)
+# Create one in Kibana → Stack Management → API Keys
+ES_API_KEY=""
 
 # Patterns to match (case-insensitive, comma-separated)
 # Resources with names containing any of these strings will be exported
