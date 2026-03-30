@@ -61,9 +61,9 @@ source "$CONFIG_FILE"
 errors=()
 [[ -z "${ES_URL:-}" ]] && errors+=("ES_URL is not set")
 
-# Check that at least one auth method is configured
-if [[ -z "${ES_API_KEY:-}" && -z "${ES_PASS:-}" ]]; then
-    errors+=("No authentication configured — set ES_API_KEY or ES_USER/ES_PASS")
+# Check that auth is configured
+if [[ -z "${ES_API_KEY:-}" ]]; then
+    errors+=("ES_API_KEY is not set")
 fi
 
 if [[ ${#errors[@]} -gt 0 ]]; then
@@ -92,13 +92,8 @@ TYPES=("${TYPES[@]// /}")
 # --- Helpers -----------------------------------------------------------------
 CURL_OPTS=(-s -f --max-time 30)
 
-# Build auth header — API key takes precedence
-if [[ -n "${ES_API_KEY:-}" ]]; then
-    AUTH=(-H "Authorization: ApiKey ${ES_API_KEY}")
-else
-    ES_USER="${ES_USER:-elastic}"
-    AUTH=(-u "${ES_USER}:${ES_PASS}")
-fi
+# Build auth header
+AUTH=(-H "Authorization: ApiKey ${ES_API_KEY}")
 
 es_get() {
     local response
