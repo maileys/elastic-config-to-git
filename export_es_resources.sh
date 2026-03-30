@@ -95,6 +95,11 @@ CURL_OPTS=(-s -f --max-time 30)
 # Build auth header
 AUTH=(-H "Authorization: ApiKey ${ES_API_KEY}")
 
+# Proxy support
+if [[ -n "${ES_PROXY:-}" ]]; then
+    CURL_OPTS+=(--proxy "${ES_PROXY}")
+fi
+
 es_get() {
     local response
     if ! response=$(curl "${CURL_OPTS[@]}" "${AUTH[@]}" -H "Content-Type: application/json" "${ES_URL}/$1" 2>&1); then
