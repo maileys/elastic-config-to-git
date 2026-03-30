@@ -43,8 +43,7 @@ All settings live in `export_es_resources.conf` (gitignored by default — your 
 | Setting          | Description                                      | Default                                                            |
 |------------------|--------------------------------------------------|--------------------------------------------------------------------|
 | `ES_URL`         | Elastic Cloud endpoint                           | *(required)*                                                       |
-| `ES_USER`        | Elasticsearch username                           | `elastic`                                                          |
-| `ES_PASS`        | Elasticsearch password                           | *(required)*                                                       |
+| `ES_API_KEY`     | API key (create in Kibana → Stack Management)    | *(required)*                                                       |
 | `MATCH_PATTERNS` | Comma-separated name patterns (case-insensitive) | `ausiex,custom`                                                    |
 | `EXPORT_TYPES`   | Comma-separated resource types to export         | `pipelines,component_templates,index_templates,lifecycle_policies`  |
 | `OUTPUT_DIR`     | Base directory for exported files                | `.` (current directory)                                            |
