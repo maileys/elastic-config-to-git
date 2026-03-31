@@ -143,13 +143,13 @@ save_resource() {
 
     if $DRY_RUN; then
         echo "  [dry-run] ${name}"
-        ((saved++))
+        ((saved++)) || true
         return
     fi
 
     echo "$json" | python3 -m json.tool > "$outfile" 2>/dev/null || echo "$json" > "$outfile"
     echo "  ✓ ${name}"
-    ((saved++))
+    ((saved++)) || true
 }
 
 # --- Connection test ---------------------------------------------------------
@@ -191,7 +191,7 @@ print(json.dumps(data[sys.argv[1]]))
 " "$name")
             save_resource "$outdir" "$name" "$body"
         else
-            ((skipped++))
+            ((skipped++)) || true
         fi
     done <<< "$pipeline_names"
     echo ""
@@ -217,7 +217,7 @@ for ct in sorted(data.get('component_templates', []), key=lambda x: x['name']):
             body=$(es_get "_component_template/${name}")
             save_resource "$outdir" "$name" "$body"
         else
-            ((skipped++))
+            ((skipped++)) || true
         fi
     done <<< "$comp_names"
     echo ""
@@ -243,7 +243,7 @@ for t in sorted(data.get('index_templates', []), key=lambda x: x['name']):
             body=$(es_get "_index_template/${name}")
             save_resource "$outdir" "$name" "$body"
         else
-            ((skipped++))
+            ((skipped++)) || true
         fi
     done <<< "$idx_names"
     echo ""
@@ -272,7 +272,7 @@ print(json.dumps(data[sys.argv[1]]))
 " "$name")
             save_resource "$outdir" "$name" "$body"
         else
-            ((skipped++))
+            ((skipped++)) || true
         fi
     done <<< "$ilm_names"
     echo ""
