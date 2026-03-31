@@ -118,7 +118,7 @@ es_get() {
 matches_pattern() {
     local name="${1,,}"
     for pattern in "${PATTERNS[@]}"; do
-        if [[ "$name" == *"${pattern,,}"* ]]; then
+        if [[ "$name" =~ ${pattern,,} ]]; then
             return 0
         fi
     done
