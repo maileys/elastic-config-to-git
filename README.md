@@ -13,7 +13,7 @@ With this tool you can:
 - **Recover from mistakes** — rolled back a deployment but lost your custom pipeline? It's in Git
 - **Audit and review** — PRs for infrastructure changes, not just app code
 - **Migrate between clusters** — export from one, import to another
-- **Filter by naming convention** — only export resources matching your patterns (e.g. `custom-*`, `ausiex-*`), skipping the hundreds of built-in Elastic defaults
+- **Filter by naming convention** — only export resources matching your patterns (e.g. `custom-*`, `companyname-*`), skipping the hundreds of built-in Elastic defaults
 
 ## Quick Start
 
@@ -45,7 +45,7 @@ All settings live in `export_es_resources.conf` (gitignored by default — your 
 | `ES_URL`         | Elastic Cloud endpoint                           | *(required)*                                                       |
 | `ES_API_KEY`     | API key (create in Kibana → Stack Management)    | *(required)*                                                       |
 | `ES_PROXY`       | HTTP(S) proxy URL                                | —                                                                  |
-| `MATCH_PATTERNS` | Comma-separated name patterns (case-insensitive) | `ausiex,custom`                                                    |
+| `MATCH_PATTERNS` | Comma-separated regex patterns                   | `companyname,^custom-,@custom$`                                         |
 | `EXPORT_TYPES`   | Comma-separated resource types to export         | `pipelines,component_templates,index_templates,lifecycle_policies`  |
 | `OUTPUT_DIR`     | Base directory for exported files                | `.` (current directory)                                            |
 
@@ -72,11 +72,11 @@ Each resource is saved as a pretty-printed JSON file, one per resource:
 ```
 ├── component_templates/
 │   ├── custom-logs-mappings.json
-│   └── ausiex-base-settings.json
+│   └── companyname-base-settings.json
 ├── index_templates/
 │   └── custom-logs-template.json
 ├── pipelines/
-│   ├── ausiex-ingest-pipeline.json
+│   ├── companyname-ingest-pipeline.json
 │   └── custom-geoip-enrichment.json
 └── lifecycle_policies/
     └── custom-30d-retention.json

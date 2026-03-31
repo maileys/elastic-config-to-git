@@ -17,9 +17,14 @@ ES_API_KEY=""
 # e.g. http://proxy.corp.local:8080
 ES_PROXY=""
 
-# Patterns to match (case-insensitive, comma-separated)
-# Resources with names containing any of these strings will be exported
-MATCH_PATTERNS="ausiex,custom"
+# Patterns to match (comma-separated bash regex)
+# Resources with names matching any of these patterns will be exported
+# Examples:
+#   ^custom-        matches names starting with "custom-"
+#   @custom$        matches names ending with "@custom"
+#   companyname          matches names containing "companyname" anywhere
+#   ^logs-companyname\.  matches names starting with "logs-companyname."
+MATCH_PATTERNS="companyname,^custom-,@custom$"
 
 # Resource types to export (comma-separated)
 # Available: pipelines,component_templates,index_templates,lifecycle_policies
