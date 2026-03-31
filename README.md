@@ -17,10 +17,12 @@ With this tool you can:
 
 ## Quick Start
 
+Keep the tool and your exported config in **separate directories** — the script lives in its own repo, and the exported JSON goes into a dedicated repo you version control independently.
+
 ```bash
-# 1. Clone the repo
-git clone https://github.com/youruser/es-config-exporter.git
-cd es-config-exporter
+# 1. Clone the tool
+git clone https://github.com/maileys/elastic-config-dump.git
+cd elastic-config-dump
 
 # 2. Create your config
 cp export_es_resources.example.conf export_es_resources.conf
@@ -28,13 +30,21 @@ cp export_es_resources.example.conf export_es_resources.conf
 # 3. Add your Elastic Cloud endpoint and credentials
 vi export_es_resources.conf
 
-# 4. Run the export
-./export_es_resources.sh
+# 4. Create a separate directory for your exported config
+cd ..
+mkdir elastic-config
+cd elastic-config
+git init
 
-# 5. Commit the results
+# 5. Run the export
+bash ../elastic-config-dump/export_es_resources.sh
+
+# 6. Commit the results
 git add pipelines/ component_templates/ index_templates/ lifecycle_policies/
 git commit -m "ES config snapshot $(date +%Y-%m-%d)"
 ```
+
+This way the tool repo stays clean and your config exports have their own commit history.
 
 ## Configuration
 
@@ -90,7 +100,7 @@ Because they're individual JSON files, `git diff` gives you clean, readable diff
 
 ```bash
 # Example: cron entry for daily export at midnight
-0 0 * * * cd /path/to/repo && ./export_es_resources.sh && git add -A && git diff --cached --quiet || git commit -m "ES config snapshot $(date +\%Y-\%m-\%d)"
+0 0 * * * cd /path/to/elastic-config && bash /path/to/elastic-config-dump/export_es_resources.sh && git add -A && git diff --cached --quiet || git commit -m "ES config snapshot $(date +\%Y-\%m-\%d)"
 ```
 
 **Before/after deployments** — export before you deploy, export after. The diff is your change log.
